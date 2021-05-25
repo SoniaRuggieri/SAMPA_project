@@ -1,0 +1,129 @@
+// let's try adding more compartment in the presynaptic
+
+//DON'T TOUCH IT FOR NOW
+
+
+//----------------------------------------------------------------------------
+//  general parameters
+//----------------------------------------------------------------------------
+//cvode_active(1)
+dt=0.1
+tstop = 500
+runStopAt = tstop
+steps_per_ms = 1/dt
+celsius = 36
+v_init = -70
+Vrest=-70	// load procedures for localizing T-current
+//xopen("tc200.geo")		// read geometry file
+
+//corrD = 1			// no dendritic surface correction
+G_pas = 1/2000
+E_pas = Vrest			// to fit current-clamp data (was -71 to -73)
+gc=1.e-6*3              //1.e-6*3 
+gkca=0.00001     //1e-5
+gkdr=0.000005  //5e-6
+gkm=0.00003       //3e-5
+
+nspinepre=9//10
+
+load_file("SAMPAmorph08mar_exp.hoc")
+objref trainsWT, netconWT, synprecWT
+
+forall{
+	insert pas
+	g_pas = G_pas //* corrD
+	e_pas = E_pas
+	cm = 1 //* corrD
+	Ra = 123//173
+	
+	
+	
+	//SODIO E POTASSIO
+	insert hh2cv
+	ena=55
+	ek = -90
+	gnabar_hh2cv = 0.05   ///0.05 
+	gkbar_hh2cv = 0.0025  /// 0.0025
+	vtraub_hh2cv = -63
+}
+
+forsec "somaWT"{
+//Ra=1
+g_pas=1/5000
+cm=1
+}
+somaWTbig { 
+cm=2
+g_pas=1/7000}
+
+forsec "headpre"{
+
+	insert caL      // HV Ca++ channel for transmitter release
+	p_caL=0.0002
+	q_caL=10
+	Ra_caL=1.6
+	Rb_caL=1.6
+	cai_caL=5.4e-4
+	cao_caL=2
+	
+	
+
+	insert rel      // transmitter release
+	Ves_rel = 0.1      // conc of vesicles (mM)
+	Fmax_rel = 0.001    // tot conc of proteins (F and V) (mM)
+	b_rel   = 1e16      // rate cst for Ca++ binding to fusion factor
+	u_rel   = 0.1       // rate cst for Ca++ unbinding
+	k1_rel  = 1000      // rate cst for activation of vesicle
+	k2_rel  = 0.1       // rate cst for deactivation of vesicle
+	k3_rel  = 4     // rate cst for exocytosis
+	nt_rel  = 10000     // number of transmitter molecule per vesicle
+	kh_rel  = 10//10        // transmitter hydolysis constant
+
+	insert sumpwt
+	imaxwt_sumpwt=0.05	// //0.6 con model5
+// Ca++ ATPase pump
+	kd_rel = 5e-5
+	kt_rel = 1e-3       // fast Ca++ removal
+	depth_rel = 1
+	taur_rel = 1e10
+
+}
+
+ PREwt {
+
+	trainsWT = new NetStim(0.5)
+	trainsWT.interval=10
+	trainsWT.number= 5
+	trainsWT.start= 1
+	trainsWT.noise=0
+
+	synprecWT = new Exp2Syn(0.5) 
+	synprecWT.tau1=0.5
+	synprecWT.tau2=3
+	synprecWT.e=0
+
+}
+	
+	
+PREwt netconWT = new NetCon(trainsWT,synprecWT,0,0,0.00005)
+
+//itotWT=somaWT.i_pas(0.5)+somaWT.i_cap(0.5)+somaWT.ik(0.5)+somaWT.ina(0.5)
+
+objectvar cWT[9]
+
+for i=0,8{
+cWT[i] = new SAMPAwt() 
+head[i] cWT[i].loc(1) 
+}
+
+            // assign postsynaptic compartment
+			
+for i=0,nspinepre-1{
+headpre[i] setpointer Trl_sumpwt(0.5), headpre[i].T_rel(0.5)
+}
+
+objref s
+s=new Shape()
+s.show(0)
+
+

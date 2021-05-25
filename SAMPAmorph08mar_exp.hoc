@@ -1,0 +1,86 @@
+//SAMPA morphology
+create PREwt1[3],PREwt
+nspinepre=9
+somadist=0.560
+diamsoma=somadist/2
+diamsoma2=somadist*10
+syndist=0.560
+somalength=3
+for i=0,2{
+PREwt1[i]{
+	pt3dclear()
+	pt3dadd(0,(i*somadist),0,diamsoma)   //(0,5,0,10)
+	pt3dadd(syndist*4,(i*somadist),0,diamsoma)	//(0,5,0,10)
+	nseg=11
+	}
+	}
+	
+dneckpre=syndist
+dheadpre=0.5
+PREwt {
+	pt3dclear()
+	pt3dadd(0,0,0,diamsoma)   //(0,5,0,10)
+	pt3dadd(0,somadist*2,0,diamsoma)	//(0,5,0,10)
+	nseg=11
+}
+
+create  headpre[nspinepre]//neckpre[nspinepre],
+
+lpre=1
+
+for j=0,2{
+	for i=0,2{
+		headpre[i+(j*3)]{
+			pt3dclear()
+			pt3dadd((i/2)*syndist*4,(j*somadist),0,dneckpre)
+			pt3dadd((i/2)*syndist*4,(j*somadist),lpre,dneckpre)//1
+			//nseg=3
+}}}
+
+//also 2
+
+lhead=1
+posit=0
+create somaWT1[3],somaWT
+
+for i=0,2{
+somaWT1[i]{
+	pt3dclear()
+	pt3dadd(0,(i*somadist),lpre+0.02+lhead+posit,diamsoma)
+	pt3dadd(syndist*4,(i*somadist),lpre+0.02+lhead+posit,diamsoma)
+	nseg=5
+	}
+}
+
+nspine=10	
+dneck=1
+dhead=1	
+
+somaWT {
+	pt3dclear()
+	pt3dadd(0,0,lpre+0.02+lhead+posit,diamsoma2)   //(0,5,0,10)
+	pt3dadd(0,somadist*2,lpre+0.02+lhead+posit,diamsoma2)	//(0,5,0,10)
+	nseg=11
+}
+
+create  head[nspinepre],somaWTbig//neck[nspine],
+
+for j=0,2{
+	for i=0,2{
+		head[i+(j*3)]{
+			pt3dclear()
+			pt3dadd((i/2)*syndist*4,(j*somadist),lpre+0.02+lhead+posit,dneckpre)
+			pt3dadd((i/2)*syndist*4,(j*somadist),lpre+0.02,dneckpre) //1
+			nseg=11
+}}}
+
+
+somaWTbig { 
+	pt3dclear()
+	pt3dadd(0,somadist*2,lpre+0.02+lhead+posit,diamsoma2)   //(0,5,0,10)
+	pt3dadd(0,somadist*12,lpre+0.02+lhead+posit,diamsoma2)	//(0,5,0,10)
+	nseg=101
+	}
+
+
+topology()
