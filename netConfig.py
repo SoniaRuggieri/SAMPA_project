@@ -1,3 +1,4 @@
+import netpyne
 from netpyne import specs, sim 
 import neuron 
 import matplotlib 
@@ -5,8 +6,8 @@ import numpy as np
 import random
 # %matplotlib inline
 from matplotlib import pyplot as plt
-from netpyne.specs import Dict
-%matplotlib inline
+from netpyne.specs import Dict, netParams
+#%matplotlib inline
 
 simConfig = specs.SimConfig() 
 

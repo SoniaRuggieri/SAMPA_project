@@ -1,5 +1,15 @@
+import netpyne
+from netpyne import specs, sim 
+import neuron 
+import matplotlib 
+import numpy as np
+import random
+# %matplotlib inline
+from matplotlib import pyplot as plt
+from netpyne.specs import Dict
 netParams = specs.NetParams()
 
+gl1=1/5000
 #has to be definied before importing the cells
 netParams.popParams['rc_pop'] = {'cellType': 'relay', 'numCells': 1,'yRange': [0,5],'xRange': [0,5],'cellModel':'realrelay'}
 netParams.popParams['ret_pop'] = {'cellType': 'RetGanCell', 'numCells': 2,'yRange': [6,10],'xRange': [6,10],'cellModel':'retgan'}
