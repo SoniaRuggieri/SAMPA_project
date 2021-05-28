@@ -5,7 +5,7 @@ NEURON {
 			POINTER Trl
         USEION xwt READ xwti, xwto WRITE ixwt VALENCE 1
         NONSPECIFIC_CURRENT i
-        RANGE ixwt, rate
+        RANGE ixwt, rate, imaxwt
 }
 
 UNITS {
