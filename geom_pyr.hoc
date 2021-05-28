@@ -1,6 +1,6 @@
 //* template E21
-//begintemplate relay
- // public soma,dendrite
+begintemplate relay
+ public soma,dendrite
   create soma, dendrite[1]
 
 proc init () { local i,j
@@ -3920,4 +3920,4 @@ proc creat12 () {
   {pt3dadd(-192.76,169.04,14.42,0.23)}
   {pt3dadd(-192.82,169.27,14.42,0.23)}
 }
-//endtemplate relay
+endtemplate relay
