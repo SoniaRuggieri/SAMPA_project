@@ -17,7 +17,7 @@ Vrest=-70	// load procedures for localizing T-current
 //xopen("tc200.geo")		// read geometry file
 
 //corrD = 1			// no dendritic surface correction
-G_pas = 1/2000
+G_pas = 1/3000
 E_pas = Vrest			// to fit current-clamp data (was -71 to -73)
 gc=1.e-6*3              //1.e-6*3 
 gkca=0.00001     //1e-5
@@ -33,8 +33,8 @@ forall{
 	insert pas
 	g_pas = G_pas //* corrD
 	e_pas = E_pas
-	cm = 1 //* corrD
-	Ra = 123//173
+	cm = 1.5 //* corrD
+	Ra = 1//173
 	
 	
 	
@@ -42,19 +42,32 @@ forall{
 	insert hh2cv
 	ena=55
 	ek = -90
-	gnabar_hh2cv = 0.05   ///0.05 
-	gkbar_hh2cv = 0.0025  /// 0.0025
+	gnabar_hh2cv = 0.01   ///0.05 
+	gkbar_hh2cv = 0.003 /// 0.0025
 	vtraub_hh2cv = -63
 }
 
 forsec "somaWT"{
-//Ra=1
-g_pas=1/5000
+Ra=173
+g_pas=1/25000
+cm=1.7
+gnabar_hh2cv = 0.01   ///0.05 
+gkbar_hh2cv = 0.003 /// 0.0025
+	
+}
+forsec "headpre"{
+g_pas=1/2000
+Ra=1
 cm=1
 }
+
 somaWTbig { 
-cm=2
-g_pas=1/7000}
+cm=1.7
+g_pas=1/25000
+gnabar_hh2cv = 0.01   ///0.05 
+gkbar_hh2cv = 0.003 /// 0.0025
+Ra=173
+	}
 
 forsec "headpre"{
 
@@ -66,7 +79,9 @@ forsec "headpre"{
 	cai_caL=5.4e-4
 	cao_caL=2
 	
-	
+	gnabar_hh2cv = 0.05   ///0.05 
+	gkbar_hh2cv = 0.002
+	cm=1
 
 	insert rel      // transmitter release
 	Ves_rel = 0.1      // conc of vesicles (mM)
@@ -76,11 +91,11 @@ forsec "headpre"{
 	k1_rel  = 1000      // rate cst for activation of vesicle
 	k2_rel  = 0.1       // rate cst for deactivation of vesicle
 	k3_rel  = 4     // rate cst for exocytosis
-	nt_rel  = 10000     // number of transmitter molecule per vesicle
+	nt_rel  = 8000     // number of transmitter molecule per vesicle
 	kh_rel  = 10//10        // transmitter hydolysis constant
 
 	insert sumpwt
-	imaxwt_sumpwt=0.05	// //0.6 con model5
+	imaxwt_sumpwt=0.05	// //0.05 good
 // Ca++ ATPase pump
 	kd_rel = 5e-5
 	kt_rel = 1e-3       // fast Ca++ removal
@@ -105,7 +120,7 @@ forsec "headpre"{
 }
 	
 	
-PREwt netconWT = new NetCon(trainsWT,synprecWT,0,0,0.00005)
+PREwt netconWT = new NetCon(trainsWT,synprecWT,0,0,0.0001)
 
 //itotWT=somaWT.i_pas(0.5)+somaWT.i_cap(0.5)+somaWT.ik(0.5)+somaWT.ina(0.5)
 
@@ -121,6 +136,8 @@ head[i] cWT[i].loc(1)
 for i=0,nspinepre-1{
 headpre[i] setpointer Trl_sumpwt(0.5), headpre[i].T_rel(0.5)
 }
+
+
 
 objref s
 s=new Shape()

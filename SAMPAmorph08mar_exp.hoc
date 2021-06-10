@@ -11,7 +11,7 @@ PREwt1[i]{
 	pt3dclear()
 	pt3dadd(0,(i*somadist),0,diamsoma)   //(0,5,0,10)
 	pt3dadd(syndist*4,(i*somadist),0,diamsoma)	//(0,5,0,10)
-	nseg=11
+	nseg=21
 	}
 	}
 	
@@ -21,7 +21,7 @@ PREwt {
 	pt3dclear()
 	pt3dadd(0,0,0,diamsoma)   //(0,5,0,10)
 	pt3dadd(0,somadist*2,0,diamsoma)	//(0,5,0,10)
-	nseg=11
+	nseg=21
 }
 
 create  headpre[nspinepre]//neckpre[nspinepre],
@@ -48,7 +48,7 @@ somaWT1[i]{
 	pt3dclear()
 	pt3dadd(0,(i*somadist),lpre+0.02+lhead+posit,diamsoma)
 	pt3dadd(syndist*4,(i*somadist),lpre+0.02+lhead+posit,diamsoma)
-	nseg=5
+	nseg=21
 	}
 }
 
@@ -60,7 +60,7 @@ somaWT {
 	pt3dclear()
 	pt3dadd(0,0,lpre+0.02+lhead+posit,diamsoma2)   //(0,5,0,10)
 	pt3dadd(0,somadist*2,lpre+0.02+lhead+posit,diamsoma2)	//(0,5,0,10)
-	nseg=11
+	nseg=21
 }
 
 create  head[nspinepre],somaWTbig//neck[nspine],
@@ -71,14 +71,14 @@ for j=0,2{
 			pt3dclear()
 			pt3dadd((i/2)*syndist*4,(j*somadist),lpre+0.02+lhead+posit,dneckpre)
 			pt3dadd((i/2)*syndist*4,(j*somadist),lpre+0.02,dneckpre) //1
-			nseg=11
+			nseg=21
 }}}
 
 
 somaWTbig { 
 	pt3dclear()
 	pt3dadd(0,somadist*2,lpre+0.02+lhead+posit,diamsoma2)   //(0,5,0,10)
-	pt3dadd(0,somadist*12,lpre+0.02+lhead+posit,diamsoma2)	//(0,5,0,10)
+	pt3dadd(0,somadist*52,lpre+0.02+lhead+posit,diamsoma2)	//(0,5,0,10)
 	nseg=101
 	}
 
