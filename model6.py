@@ -1,5 +1,5 @@
-########## it works with SAMPAtemp1head08mar_ko.hoc
-######### SAMPAmorph08mar.hoc
+########## it works with SAMPAtemp1head08mar_ko_exp.hoc
+######### SAMPAmorph08mar_exp.hoc
 
 #rxd trial
 from neuron import h,gui,rxd
@@ -46,7 +46,9 @@ for i in range(3):
         #print(int(2))
         h.headpre[(i*3)+j].connect(h.PREwt1[i]((j+1)/4),0)    #j/2
         h.head[(i*3)+j].connect(h.somaWT1[i]((j+1)/4),0)
-        h.cWT[(i*3)+j].gbarampa=10
+        h.cWT[(i*3)+j].gbarampa=100#350  
+        #170 ko no firing #200 spike ko 
+        #200 wt no firing #
         #print(i)
         #print(j)
         #print((i*3)+j)
@@ -54,7 +56,7 @@ for i in range(3):
 h.topology()
 
  
-def exclude(x, y, z, diam, value_outside=inf, value_inside=1.6):
+def exclude(x, y, z, diam, value_outside=inf, value_inside=1):
     """ Function returns value_outside if the (x,y,z) point is outside the
         diameter otherwise value_inside (defaults to inf)
     """
@@ -65,7 +67,7 @@ def exclude(x, y, z, diam, value_outside=inf, value_inside=1.6):
  
 
 
-ecswt = rxd.Extracellular(0, -0.5, -0.5, (h.syndist*4)+0.5, (h.somadist*3), h.lpre+0.02+h.lhead, dx=(0.05,0.05,0.005), volume_fraction=1, tortuosity=lambda x,y,z: exclude(x, y, z, 1))##tortuosity=1.05) #1.34
+ecswt = rxd.Extracellular(-0.5, -0.5, -0.5, (h.syndist*4)+0.5, (h.somadist*3), h.lpre+0.02+h.lhead, dx=(0.05,0.05,0.005), volume_fraction=1, tortuosity=lambda x,y,z: exclude(x, y, z, 1))##tortuosity=1.05) #1.34
 #print(tortuosity)
 print(h.somadist*3)
 print(ecswt)
@@ -172,7 +174,7 @@ def hi():
     global vv
     print(h.t)
     #vv=[0]
-    vv=random.sample(list(range(0,int(h.nspinepre))),int(int(h.nspinepre)*0.2))
+    vv=random.sample(list(range(0,int(h.nspinepre))),int(int(h.nspinepre)*0.3))   ##70% release probability @1st stimulus
     print(vv)
     for i in range(0,len(vv)):
         print(h.headpre[vv[i]](0.5).VA_rel)
@@ -194,7 +196,7 @@ def hi3():
     global vv1
     print(h.t)
     #vv=[0]
-    vv1=random.sample(list(range(0,int(h.nspinepre))),int(int(h.nspinepre)*0.3))
+    vv1=random.sample(list(range(0,int(h.nspinepre))),int(int(h.nspinepre)*0.6))   ##70%*60% release probability @2nd stimulus
     print(vv1)
     for i in range(0,len(vv1)):
         #print(h.headpre[vv1[i]](0.5).nt_rel)
@@ -231,7 +233,7 @@ def init():
         h.cvode.event(h.t+h.trainsWT.start+(h.trainsWT.interval*i)-(h.trainsWT.interval/3),hi3)
         h.cvode.event(h.t+h.trainsWT.start+(h.trainsWT.interval*i)+(h.trainsWT.interval/3),hi4)
 
-test= np.array([0,2,4,6,8])
+test= np.array([1,3,5,7])
 def idea():
     h.trainsWT.number=10
     h.trainsWT.interval=20
@@ -239,7 +241,7 @@ def idea():
     for i in test:
         h.headpre[i](0.5).nt_rel=0
         h.headpre[i](0.5).kh_rel=0
-        h.cWT[i].gbarampa=50
+        h.cWT[i].gbarampa=180
 '''
     h.headpre[1](0.5).nt_rel=0
     h.headpre[1](0.5).kh_rel=0
@@ -259,13 +261,13 @@ def idea():
 '''
 
 init()
-h.continuerun(96)
+h.continuerun(300)
 
 
 #h.finitialize(-70)
 #idea()
 #print(h.trainsWT.start)
-#h.continuerun(96)
+#h.continuerun(150)
 
 
 fig = pyplot.figure()
